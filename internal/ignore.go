@@ -7,8 +7,13 @@ import (
 )
 
 func AddIgnoreTemplate(fileName string, templateName string) {
-	colorGreen := "\033[32m"
 	colorReset := "\033[0m"
+
+	tr := NewTemplateRegistry()
+	if !tr.HasTemplate(templateName) {
+		log.Fatalf("template '%s' does not exist", templateName)
+	}
+
 	pathFile := "./" + fileName
 	_, err := os.Stat(pathFile)
 	if err != nil {
@@ -22,22 +27,16 @@ func AddIgnoreTemplate(fileName string, templateName string) {
 		}
 	}
 
-	tr := NewTemplateRegistry()
-	if !tr.HasTemplate(templateName) {
-		log.Fatal("template does not exist")
-	}
-
 	file, err := os.OpenFile(pathFile, os.O_APPEND|os.O_WRONLY, 0666)
 	if err != nil {
 		log.Fatal(err)
 	}
 	defer file.Close()
 
-	err = tr.CopyTemplate(templateName, file)
+	err = tr.WriteTemplate(templateName, file)
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Println(string(colorGreen))
 	fmt.Print("√  ", string(colorReset))
-	fmt.Println(fileName + " created successfully")
+	fmt.Printf("%s %s created successfully\n", templateName, fileName)
 }

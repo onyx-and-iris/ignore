@@ -51,9 +51,11 @@ go install
 
 <h2>Usage</h2>
 
-Just run `ignore` and you're ready to go.
+Pass the language you want to generate a *.gitignore* file for as an argument, example:
 
-![Usage](https://github.com/neptship/ignore/blob/main/assets/ignore.gif?raw=true)
+```bash
+ignore python
+```
 
 <h2> Built With </h2>
 
